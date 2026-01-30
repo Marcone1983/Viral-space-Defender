@@ -16,7 +16,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, #0A0A2A, #1C1C4C);
+            background: #000;
             font-family: 'Courier New', monospace;
             display: flex;
             justify-content: center;
@@ -50,12 +50,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 30;
+            z-index: 100;
             text-align: center;
         }
         #logo {
@@ -79,9 +79,10 @@
             letter-spacing: 2px;
             box-shadow: 0 0 20px var(--neon-magenta);
             transition: all 0.3s;
+            z-index: 110;
         }
         #start-button:hover {
-            transform: scale(1.1) rotate(-2deg);
+            transform: scale(1.1);
             box-shadow: 0 0 30px var(--neon-magenta);
         }
         #ui {
@@ -89,18 +90,18 @@
             top: 15px;
             left: 15px;
             right: 15px;
-            display: flex;
+            display: none;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
+            z-index: 50;
             pointer-events: none;
         }
         .ui-box {
             background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
+            padding: 10px 15px;
             border-radius: 12px;
             border: 1px solid var(--neon-cyan);
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             text-shadow: 0 0 5px var(--neon-cyan);
             pointer-events: auto;
@@ -108,13 +109,12 @@
         #shop-button {
             background: #FF4500;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            transition: transform 0.2s;
             pointer-events: auto;
         }
         #shop {
@@ -122,58 +122,52 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(10, 10, 42, 0.95);
-            padding: 30px;
+            background: rgba(10, 10, 42, 0.98);
+            padding: 25px;
             border-radius: 20px;
             border: 2px solid var(--neon-cyan);
             box-shadow: 0 0 50px var(--neon-cyan);
             display: none;
-            z-index: 40;
-            width: 85%;
-            max-width: 500px;
-            max-height: 85vh;
+            z-index: 200;
+            width: 90%;
+            max-width: 450px;
+            max-height: 80vh;
             overflow-y: auto;
-        }
-        #shop h2 {
-            text-align: center;
-            color: var(--neon-cyan);
-            text-shadow: 0 0 15px var(--neon-cyan);
-            margin-top: 0;
         }
         .shop-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 15px 0;
-            padding: 15px;
+            margin: 10px 0;
+            padding: 12px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            border: 1px solid rgba(0, 255, 255, 0.2);
         }
-        .shop-item span { flex: 1; font-size: 14px; }
-        .shop-item .btn-group { display: flex; flex-direction: column; gap: 5px; }
-        .shop-item button {
+        .shop-item span { flex: 1; font-size: 13px; margin-right: 10px; }
+        .btn-group { display: flex; flex-direction: column; gap: 5px; }
+        .btn-group button {
             background: #32CD32;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
-        .shop-item button:disabled { background: #444; cursor: not-allowed; }
+        .btn-group button:disabled { background: #444; cursor: not-allowed; }
         #close-shop {
             display: block;
-            margin: 20px auto 0;
+            margin: 15px auto 0;
             background: #FF0000;
             color: white;
-            padding: 12px;
+            padding: 10px;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             width: 100%;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
         }
         #game-over {
@@ -182,17 +176,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 0, 0, 0.4);
+            background: rgba(255, 0, 0, 0.5);
             backdrop-filter: blur(5px);
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 50;
+            z-index: 300;
             color: #fff;
-            text-align: center;
         }
-        #game-over h1 { font-size: 60px; margin: 0; text-shadow: 0 0 20px #000; }
         #restart-button {
             background: var(--neon-yellow);
             color: #000;
@@ -202,43 +194,36 @@
             cursor: pointer;
             font-size: 24px;
             font-weight: bold;
-            margin-top: 30px;
-            box-shadow: 0 0 20px var(--neon-yellow);
+            margin-top: 20px;
+        }
+        #wallet-container {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 150;
         }
         #joystick {
             position: absolute;
             bottom: 40px;
             left: 40px;
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: none;
-            z-index: 20;
+            z-index: 60;
         }
         #joystick-knob {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background: var(--neon-cyan);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             box-shadow: 0 0 15px var(--neon-cyan);
-        }
-        #wallet-status {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            font-size: 12px;
-            color: #00FF00;
-            background: rgba(0,0,0,0.5);
-            padding: 5px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            z-index: 10;
         }
     </style>
 </head>
@@ -251,62 +236,62 @@
                 <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="#00FFFF" stroke-width="3"/>
                 <polygon points="50,20 80,35 80,65 50,80 20,65 20,35" fill="none" stroke="#FF00FF" stroke-width="3"/>
                 <text x="50" y="55" font-size="30" text-anchor="middle" fill="#FFD700" font-weight="bold">VSD</text>
-                <line x1="30" y1="40" x2="70" y2="60" stroke="#FFFF00" stroke-width="2"/>
-                <line x1="30" y1="60" x2="70" y2="40" stroke="#FFFF00" stroke-width="2"/>
             </svg>
-            <h1 style="text-shadow: 0 0 15px var(--neon-cyan); font-size: 8vmin; margin: 10px 0;">VIRAL SPACE DEFENDER</h1>
+            <h1 style="text-shadow: 0 0 15px var(--neon-cyan); font-size: 7vmin; margin: 10px 0;">VIRAL SPACE DEFENDER</h1>
             <p style="color: var(--neon-cyan); margin-bottom: 30px;">ULTIMATE EDITION</p>
             <button id="start-button">AVVIA MISSIONE</button>
         </div>
 
-        <div id="ui" style="display: none;">
+        <div id="ui">
             <div id="score" class="ui-box">Score: 0</div>
             <div id="level" class="ui-box">Level: 1</div>
             <div id="health" class="ui-box">Health: 3</div>
             <button id="shop-button">UPGRADES</button>
         </div>
 
-        <div id="wallet-status">Wallet: Disconnected</div>
+        <div id="wallet-container">
+            <div id="ton-connect"></div>
+        </div>
 
         <div id="shop">
-            <h2>STAZIONE DI POTENZIAMENTO</h2>
+            <h2>STAZIONE UPGRADE</h2>
             <div class="shop-item">
-                <span>Auto-Blaster (+1/sec)<br>Costo: 50 Score / 0.1 TON</span>
+                <span>Auto-Blaster (+1/sec)<br>50 Score / 0.1 TON</span>
                 <div class="btn-group">
                     <button id="buy-auto">SCORE</button>
                     <button id="buy-auto-ton">TON</button>
                 </div>
             </div>
             <div class="shop-item">
-                <span>Moltiplicatore x2<br>Costo: 100 Score / 0.2 TON</span>
+                <span>Moltiplicatore x2<br>100 Score / 0.2 TON</span>
                 <div class="btn-group">
                     <button id="buy-multi">SCORE</button>
                     <button id="buy-multi-ton">TON</button>
                 </div>
             </div>
             <div class="shop-item">
-                <span>Super Laser (Danno x2)<br>Costo: 200 Score / 0.5 TON</span>
+                <span>Super Laser (Danno x2)<br>200 Score / 0.5 TON</span>
                 <div class="btn-group">
                     <button id="buy-super">SCORE</button>
                     <button id="buy-super-ton">TON</button>
                 </div>
             </div>
             <div class="shop-item">
-                <span>Boost Velocità (+20%)<br>Costo: 150 Score / 0.3 TON</span>
+                <span>Boost Velocità (+20%)<br>150 Score / 0.3 TON</span>
                 <div class="btn-group">
                     <button id="buy-speed">SCORE</button>
                     <button id="buy-speed-ton">TON</button>
                 </div>
             </div>
             <div class="shop-item">
-                <span>Scudo Extra (+1 Vita)<br>Costo: 300 Score / 0.6 TON</span>
+                <span>Scudo Extra (+1 Vita)<br>300 Score / 0.6 TON</span>
                 <div class="btn-group">
                     <button id="buy-health">SCORE</button>
                     <button id="buy-health-ton">TON</button>
                 </div>
             </div>
             <div class="shop-item">
-                <span>Campo Magnetico<br>Costo: 250 Score / 0.5 TON</span>
+                <span>Campo Magnetico<br>250 Score / 0.5 TON</span>
                 <div class="btn-group">
                     <button id="buy-magnet">SCORE</button>
                     <button id="buy-magnet-ton">TON</button>
@@ -317,7 +302,7 @@
 
         <div id="game-over">
             <h1>MISSIONE FALLITA</h1>
-            <p style="font-size: 24px;">Punteggio Finale: <span id="final-score">0</span></p>
+            <p style="font-size: 24px;">Punteggio: <span id="final-score">0</span></p>
             <button id="restart-button">RIPROVA</button>
         </div>
 
@@ -327,7 +312,7 @@
     </div>
 
     <script>
-        // --- CONFIGURAZIONE E VARIABILI ---
+        // --- GLOBALS ---
         const telegram = window.Telegram.WebApp;
         telegram.ready();
         telegram.expand();
@@ -335,7 +320,7 @@
         const devWallet = 'UQArbhbVEIkN4xSWis30yIrNGdmOTBbiMBduGeNTErPbviyR';
         const tonConnectUI = new TONCONNECT_UI.TonConnectUI({
             manifestUrl: 'https://marcone1983.github.io/Viral-space-Defender/tonconnect-manifest.json',
-            buttonRootId: null
+            buttonRootId: 'ton-connect'
         });
 
         const canvas = document.getElementById('canvas');
@@ -343,37 +328,36 @@
         const scoreEl = document.getElementById('score');
         const levelEl = document.getElementById('level');
         const healthEl = document.getElementById('health');
-        const shop = document.getElementById('shop');
-        const walletStatus = document.getElementById('wallet-status');
-        const joystick = document.getElementById('joystick');
+        const shopEl = document.getElementById('shop');
+        const joystickEl = document.getElementById('joystick');
         const joystickKnob = document.getElementById('joystick-knob');
 
         let score = 0, level = 1, health = 3;
         let playerSpeed = 8, autoClickers = 0, multiplier = 1;
-        let superClick = false, magnet = false, magnetStrength = 0.5;
+        let superClick = false, magnet = false;
         let gameStarted = false, gamePaused = false, bossActive = false;
-        let stars = [], enemies = [], powerUps = [], particles = [], bullets = [];
+        let stars = [], enemies = [], bullets = [], particles = [];
         let boss = null, nextSpawnTime = 0, lastTime = 0;
         let logicalWidth = 800, logicalHeight = 600, scaleX = 1, scaleY = 1;
         let joystickActive = false, joystickTouchId = null, joystickCenterX = 0, joystickCenterY = 0;
 
-        let player = { x: 400, y: 500, size: 50, color: '#00FFFF', armorColor: '#FFD700', helmetColor: '#FF00FF' };
+        let player = { x: 400, y: 500, size: 50 };
 
-        // --- INIZIALIZZAZIONE ---
+        // --- INIT ---
         function init() {
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 60; i++) {
                 stars.push({
                     x: Math.random() * logicalWidth,
                     y: Math.random() * logicalHeight,
                     size: Math.random() * 2 + 0.5,
-                    speed: Math.random() * 1 + 0.2,
-                    color: Math.random() > 0.8 ? '#FF00FF' : '#FFFFFF'
+                    speed: Math.random() * 1 + 0.2
                 });
             }
             resize();
             window.addEventListener('resize', resize);
             updateScore();
             updateHealth();
+            requestAnimationFrame(gameLoop);
         }
 
         function resize() {
@@ -387,40 +371,29 @@
             scaleX = w / logicalWidth; scaleY = h / logicalHeight;
         }
 
-        // --- DISEGNO (ISPIRATO AI DISEGNI 2D ORIGINALI) ---
+        // --- DRAWING ---
         function drawPlayer() {
             ctx.save();
             ctx.scale(scaleX, scaleY);
             ctx.translate(player.x, player.y);
             
-            // Corpo (Design elaborato dai disegni)
-            ctx.fillStyle = player.color;
-            ctx.beginPath();
-            ctx.ellipse(0, 0, 20, 30, 0, 0, Math.PI * 2);
-            ctx.fill();
+            // Corpo
+            ctx.fillStyle = '#00FFFF';
+            ctx.beginPath(); ctx.ellipse(0, 0, 20, 30, 0, 0, Math.PI * 2); ctx.fill();
             
-            // Armatura laterale
-            ctx.fillStyle = player.armorColor;
-            ctx.beginPath();
-            ctx.moveTo(-25, -10); ctx.lineTo(-35, 10); ctx.lineTo(-25, 20); ctx.fill();
-            ctx.beginPath();
-            ctx.moveTo(25, -10); ctx.lineTo(35, 10); ctx.lineTo(25, 20); ctx.fill();
+            // Armatura
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath(); ctx.moveTo(-25, -10); ctx.lineTo(-35, 10); ctx.lineTo(-25, 20); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(25, -10); ctx.lineTo(35, 10); ctx.lineTo(25, 20); ctx.fill();
             
             // Casco
-            ctx.fillStyle = player.helmetColor;
-            ctx.beginPath();
-            ctx.arc(0, -25, 15, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = 'rgba(255,255,255,0.3)';
-            ctx.beginPath();
-            ctx.arc(5, -30, 5, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.fillStyle = '#FF00FF';
+            ctx.beginPath(); ctx.arc(0, -25, 15, 0, Math.PI * 2); ctx.fill();
             
-            // Propulsori
+            // Propulsore
             if (Math.random() > 0.3) {
                 ctx.fillStyle = '#FF4500';
-                ctx.beginPath();
-                ctx.moveTo(-10, 30); ctx.lineTo(0, 50); ctx.lineTo(10, 30); ctx.fill();
+                ctx.beginPath(); ctx.moveTo(-10, 30); ctx.lineTo(0, 50); ctx.lineTo(10, 30); ctx.fill();
             }
             ctx.restore();
         }
@@ -430,17 +403,12 @@
             ctx.scale(scaleX, scaleY);
             ctx.translate(e.x, e.y);
             ctx.fillStyle = e.color;
-            
             if (e.type === 'drone') {
                 ctx.beginPath(); ctx.arc(0, 0, e.size/2, 0, Math.PI*2); ctx.fill();
-                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
             } else if (e.type === 'fighter') {
-                ctx.beginPath();
-                ctx.moveTo(0, -e.size/2); ctx.lineTo(-e.size/2, e.size/2); ctx.lineTo(e.size/2, e.size/2);
-                ctx.fill();
-            } else if (e.type === 'bomber') {
+                ctx.beginPath(); ctx.moveTo(0, -e.size/2); ctx.lineTo(-e.size/2, e.size/2); ctx.lineTo(e.size/2, e.size/2); ctx.fill();
+            } else {
                 ctx.fillRect(-e.size/2, -e.size/4, e.size, e.size/2);
-                ctx.fillStyle = '#000'; ctx.fillRect(-e.size/4, -e.size/8, e.size/2, e.size/4);
             }
             ctx.restore();
         }
@@ -450,231 +418,77 @@
             ctx.save();
             ctx.scale(scaleX, scaleY);
             ctx.translate(boss.x, boss.y);
-            
-            // Design Boss "Mega Weapon"
             ctx.fillStyle = '#4B0082';
-            ctx.beginPath();
-            ctx.moveTo(0, -boss.size/2);
-            ctx.lineTo(-boss.size/2, 0);
-            ctx.lineTo(-boss.size/4, boss.size/2);
-            ctx.lineTo(boss.size/4, boss.size/2);
-            ctx.lineTo(boss.size/2, 0);
-            ctx.closePath();
-            ctx.fill();
+            ctx.beginPath(); ctx.moveTo(0, -boss.size/2); ctx.lineTo(-boss.size/2, 0); ctx.lineTo(0, boss.size/2); ctx.lineTo(boss.size/2, 0); ctx.fill();
             ctx.strokeStyle = '#00FFFF'; ctx.lineWidth = 3; ctx.stroke();
-            
-            // Torrette
-            ctx.fillStyle = '#FF0000';
-            ctx.beginPath(); ctx.arc(-30, 0, 15, 0, Math.PI*2); ctx.fill();
-            ctx.beginPath(); ctx.arc(30, 0, 15, 0, Math.PI*2); ctx.fill();
-            
-            // Barra Vita
+            // Health bar
             ctx.fillStyle = '#333'; ctx.fillRect(-boss.size/2, -boss.size/2 - 20, boss.size, 10);
             ctx.fillStyle = '#00FF00'; ctx.fillRect(-boss.size/2, -boss.size/2 - 20, boss.size * (boss.health/boss.maxHealth), 10);
             ctx.restore();
         }
 
-        // --- LOGICA DI GIOCO ---
+        // --- GAME LOGIC ---
         function createEnemy() {
             const types = ['drone', 'fighter', 'bomber'];
             const type = types[Math.floor(Math.random() * types.length)];
             let size = 40, speed = 2 + level * 0.2, color = '#FF3333', hp = 1;
             if (type === 'fighter') { speed += 1.5; color = '#FF8C00'; }
             if (type === 'bomber') { size = 60; speed -= 0.5; color = '#8B0000'; hp = 3; }
-            
-            enemies.push({
-                x: Math.random() * (logicalWidth - 100) + 50,
-                y: -50, size, speed, type, color, health: hp,
-                angle: 0, zigZag: Math.random() > 0.7
-            });
+            enemies.push({ x: Math.random() * 700 + 50, y: -50, size, speed, type, color, health: hp });
         }
 
         function createBoss() {
-            boss = {
-                x: 400, y: 100, size: 150, speed: 2,
-                health: 20 + level * 5, maxHealth: 20 + level * 5,
-                dir: 1, angle: 0
-            };
+            boss = { x: 400, y: 100, size: 150, speed: 2, health: 20 + level * 5, maxHealth: 20 + level * 5, dir: 1, angle: 0 };
             bossActive = true;
         }
 
         function update(dt) {
             if (!gameStarted || gamePaused) return;
-
-            // Stelle
-            stars.forEach(s => {
-                s.y += s.speed;
-                if (s.y > logicalHeight) s.y = 0;
-            });
-
-            // Nemici
+            stars.forEach(s => { s.y += s.speed; if (s.y > logicalHeight) s.y = 0; });
             for (let i = enemies.length - 1; i >= 0; i--) {
-                let e = enemies[i];
-                e.y += e.speed;
-                if (e.zigZag) { e.x += Math.sin(e.angle) * 3; e.angle += 0.1; }
-                
-                // Collisione Giocatore
-                const dist = Math.hypot(player.x - e.x, player.y - e.y);
-                if (dist < (player.size + e.size) / 2.5) {
-                    health--; updateHealth();
-                    createParticles(e.x, e.y, 20, e.color);
-                    enemies.splice(i, 1);
-                    continue;
-                }
-                
-                if (e.y > logicalHeight + 50) {
-                    health--; updateHealth();
-                    enemies.splice(i, 1);
-                }
+                let e = enemies[i]; e.y += e.speed;
+                if (Math.hypot(player.x - e.x, player.y - e.y) < 40) { health--; updateHealth(); enemies.splice(i, 1); continue; }
+                if (e.y > logicalHeight + 50) { health--; updateHealth(); enemies.splice(i, 1); }
             }
-
-            // Boss
             if (bossActive && boss) {
-                boss.x += Math.sin(boss.angle) * boss.speed * boss.dir;
-                boss.angle += 0.02;
+                boss.x += Math.sin(boss.angle) * boss.speed * boss.dir; boss.angle += 0.02;
                 if (boss.x < 100 || boss.x > 700) boss.dir *= -1;
-                
-                if (Math.random() < 0.02) { // Boss spara
-                    bullets.push({ x: boss.x, y: boss.y + 50, speed: 5, size: 10, color: '#FF00FF' });
-                }
+                if (Math.random() < 0.02) bullets.push({ x: boss.x, y: boss.y + 50, speed: 5 });
             }
-
-            // Proiettili (Boss)
             for (let i = bullets.length - 1; i >= 0; i--) {
-                let b = bullets[i];
-                b.y += b.speed;
-                if (Math.hypot(player.x - b.x, player.y - b.y) < 25) {
-                    health--; updateHealth();
-                    bullets.splice(i, 1);
-                }
+                let b = bullets[i]; b.y += b.speed;
+                if (Math.hypot(player.x - b.x, player.y - b.y) < 25) { health--; updateHealth(); bullets.splice(i, 1); }
                 if (b.y > 650) bullets.splice(i, 1);
             }
-
-            // Particelle
-            particles.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
-                if (p.life <= 0) particles.splice(i, 1);
-            });
-
-            // Magnete
-            if (magnet) {
-                enemies.forEach(e => {
-                    const dx = player.x - e.x, dy = player.y - e.y;
-                    const d = Math.hypot(dx, dy);
-                    if (d < 250) { e.x += (dx/d) * 2; e.y += (dy/d) * 2; }
-                });
-            }
+            particles.forEach((p, i) => { p.x += p.vx; p.y += p.vy; p.life -= 0.02; if (p.life <= 0) particles.splice(i, 1); });
+            if (magnet) { enemies.forEach(e => { const dx = player.x - e.x, dy = player.y - e.y, d = Math.hypot(dx, dy); if (d < 200) { e.x += dx/d * 2; e.y += dy/d * 2; } }); }
         }
 
         function draw() {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Stelle
+            ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.save(); ctx.scale(scaleX, scaleY);
-            stars.forEach(s => {
-                ctx.fillStyle = s.color;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
-            });
+            stars.forEach(s => { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); });
+            particles.forEach(p => { ctx.fillStyle = p.color; ctx.globalAlpha = p.life; ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill(); });
+            bullets.forEach(b => { ctx.fillStyle = '#FF00FF'; ctx.beginPath(); ctx.arc(b.x, b.y, 8, 0, Math.PI*2); ctx.fill(); });
             ctx.restore();
-
-            drawPlayer();
-            enemies.forEach(drawEnemy);
-            if (bossActive) drawBoss();
-            
-            // Proiettili Boss
-            ctx.save(); ctx.scale(scaleX, scaleY);
-            bullets.forEach(b => {
-                ctx.fillStyle = b.color;
-                ctx.beginPath(); ctx.arc(b.x, b.y, b.size, 0, Math.PI*2); ctx.fill();
-                ctx.shadowBlur = 10; ctx.shadowColor = b.color;
-            });
-            
-            // Particelle
-            particles.forEach(p => {
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.life;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill();
-            });
-            ctx.restore();
+            if (gameStarted) { drawPlayer(); enemies.forEach(drawEnemy); if (bossActive) drawBoss(); }
         }
 
         function gameLoop(t) {
-            const dt = (t - lastTime) / 1000;
-            lastTime = t;
-            
+            const dt = (t - lastTime) / 1000; lastTime = t;
             if (gameStarted && !gamePaused) {
-                if (t > nextSpawnTime && !bossActive) {
-                    createEnemy();
-                    nextSpawnTime = t + Math.max(300, 1000 - level * 50);
-                }
+                if (t > nextSpawnTime && !bossActive) { createEnemy(); nextSpawnTime = t + Math.max(400, 1200 - level * 60); }
                 update(dt);
             }
-            draw();
-            requestAnimationFrame(gameLoop);
+            draw(); requestAnimationFrame(gameLoop);
         }
 
-        // --- INTERAZIONI ---
-        canvas.addEventListener('touchstart', handleTouch);
-        canvas.addEventListener('mousedown', handleMouse);
-
-        function handleTouch(e) {
-            e.preventDefault();
-            const rect = canvas.getBoundingClientRect();
-            for (let t of e.touches) {
-                const x = (t.clientX - rect.left) / scaleX;
-                const y = (t.clientY - rect.top) / scaleY;
-                checkHit(x, y);
-                
-                // Attiva joystick se toccato a sinistra
-                if (t.clientX < window.innerWidth / 2) {
-                    joystickActive = true;
-                    joystickTouchId = t.identifier;
-                    joystickCenterX = t.clientX; joystickCenterY = t.clientY;
-                    joystick.style.display = 'block';
-                    joystick.style.left = `${t.clientX - 60}px`;
-                    joystick.style.top = `${t.clientY - 60}px`;
-                }
-            }
-        }
-
-        document.addEventListener('touchmove', e => {
-            if (!joystickActive) return;
-            for (let t of e.touches) {
-                if (t.identifier === joystickTouchId) {
-                    let dx = t.clientX - joystickCenterX;
-                    let dy = t.clientY - joystickCenterY;
-                    const dist = Math.hypot(dx, dy);
-                    if (dist > 60) { dx *= 60/dist; dy *= 60/dist; }
-                    joystickKnob.style.left = `calc(50% + ${dx}px)`;
-                    joystickKnob.style.top = `calc(50% + ${dy}px)`;
-                    player.x += (dx/60) * playerSpeed;
-                    player.y += (dy/60) * playerSpeed;
-                    player.x = Math.max(30, Math.min(770, player.x));
-                    player.y = Math.max(30, Math.min(570, player.y));
-                }
-            }
-        });
-
-        document.addEventListener('touchend', () => { joystickActive = false; joystick.style.display = 'none'; });
-
-        function handleMouse(e) {
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / scaleX;
-            const y = (e.clientY - rect.top) / scaleY;
-            checkHit(x, y);
-        }
-
+        // --- INTERACTIONS ---
         function checkHit(x, y) {
             if (bossActive && boss) {
                 if (Math.hypot(x - boss.x, y - boss.y) < boss.size/2) {
                     boss.health -= superClick ? 2 : 1;
-                    createParticles(x, y, 10, '#FF00FF');
-                    if (boss.health <= 0) {
-                        bossActive = false; score += 1000 * multiplier;
-                        createParticles(boss.x, boss.y, 50, '#00FFFF');
-                        updateScore();
-                    }
+                    if (boss.health <= 0) { bossActive = false; score += 1000 * multiplier; updateScore(); }
                     return;
                 }
             }
@@ -682,51 +496,54 @@
                 let e = enemies[i];
                 if (Math.hypot(x - e.x, y - e.y) < e.size/2) {
                     e.health -= superClick ? 2 : 1;
-                    if (e.health <= 0) {
-                        score += (10 + level * 5) * multiplier;
-                        createParticles(e.x, e.y, 15, e.color);
-                        enemies.splice(i, 1);
-                        updateScore();
-                    } else {
-                        createParticles(x, y, 5, '#FFFFFF');
-                    }
+                    if (e.health <= 0) { score += (10 + level * 5) * multiplier; enemies.splice(i, 1); updateScore(); }
                     break;
                 }
             }
         }
 
-        function createParticles(x, y, count, color) {
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x, y, color, life: 1,
-                    vx: (Math.random() - 0.5) * 10,
-                    vy: (Math.random() - 0.5) * 10
-                });
+        canvas.addEventListener('mousedown', e => { const r = canvas.getBoundingClientRect(); checkHit((e.clientX - r.left)/scaleX, (e.clientY - r.top)/scaleY); });
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault(); const r = canvas.getBoundingClientRect();
+            for (let t of e.touches) {
+                const x = (t.clientX - r.left)/scaleX, y = (t.clientY - r.top)/scaleY;
+                checkHit(x, y);
+                if (t.clientX < window.innerWidth / 2) {
+                    joystickActive = true; joystickTouchId = t.identifier; joystickCenterX = t.clientX; joystickCenterY = t.clientY;
+                    joystickEl.style.display = 'block'; joystickEl.style.left = `${t.clientX - 50}px`; joystickEl.style.top = `${t.clientY - 50}px`;
+                }
             }
-        }
+        });
 
-        function updateScore() {
-            scoreEl.textContent = `Score: ${Math.floor(score)}`;
-            const nextLvl = Math.floor(score / 500) + 1;
-            if (nextLvl > level) {
-                level = nextLvl; levelEl.textContent = `Level: ${level}`;
-                if (level % 3 === 0) createBoss();
+        document.addEventListener('touchmove', e => {
+            if (!joystickActive) return;
+            for (let t of e.touches) {
+                if (t.identifier === joystickTouchId) {
+                    let dx = t.clientX - joystickCenterX, dy = t.clientY - joystickCenterY;
+                    const d = Math.hypot(dx, dy); if (d > 50) { dx *= 50/d; dy *= 50/d; }
+                    joystickKnob.style.left = `calc(50% + ${dx}px)`; joystickKnob.style.top = `calc(50% + ${dy}px)`;
+                    player.x += dx/50 * playerSpeed; player.y += dy/50 * playerSpeed;
+                    player.x = Math.max(30, Math.min(770, player.x)); player.y = Math.max(30, Math.min(570, player.y));
+                }
             }
-        }
+        });
+        document.addEventListener('touchend', () => { joystickActive = false; joystickEl.style.display = 'none'; });
 
-        function updateHealth() {
-            healthEl.textContent = `Health: ${health}`;
-            if (health <= 0) {
-                gameStarted = false;
-                document.getElementById('game-over').style.display = 'flex';
-                document.getElementById('final-score').textContent = Math.floor(score);
-            }
-        }
+        // --- UI & TON ---
+        document.getElementById('start-button').onclick = () => {
+            document.getElementById('title-screen').style.display = 'none';
+            document.getElementById('ui').style.display = 'flex';
+            gameStarted = true; lastTime = performance.now();
+        };
 
-        // --- SHOP E TON ---
-        document.getElementById('shop-button').onclick = () => { gamePaused = true; shop.style.display = 'block'; };
-        document.getElementById('close-shop').onclick = () => { gamePaused = false; shop.style.display = 'none'; };
+        document.getElementById('shop-button').onclick = () => { gamePaused = true; shopEl.style.display = 'block'; };
+        document.getElementById('close-shop').onclick = () => { gamePaused = false; shopEl.style.display = 'none'; };
+        document.getElementById('restart-button').onclick = () => location.reload();
 
+        function updateScore() { scoreEl.textContent = `Score: ${Math.floor(score)}`; if (Math.floor(score/500)+1 > level) { level = Math.floor(score/500)+1; levelEl.textContent = `Level: ${level}`; if (level % 3 === 0) createBoss(); } }
+        function updateHealth() { healthEl.textContent = `Health: ${health}`; if (health <= 0) { gameStarted = false; document.getElementById('game-over').style.display = 'flex'; document.getElementById('final-score').textContent = Math.floor(score); } }
+
+        // Shop Logic
         document.getElementById('buy-auto').onclick = () => { if(score >= 50) { score -= 50; autoClickers++; updateScore(); } };
         document.getElementById('buy-multi').onclick = () => { if(score >= 100) { score -= 100; multiplier *= 2; updateScore(); } };
         document.getElementById('buy-super').onclick = () => { if(score >= 200) { score -= 200; superClick = true; updateScore(); } };
@@ -734,15 +551,12 @@
         document.getElementById('buy-health').onclick = () => { if(score >= 300) { score -= 300; health++; updateHealth(); updateScore(); } };
         document.getElementById('buy-magnet').onclick = () => { if(score >= 250) { score -= 250; magnet = true; updateScore(); } };
 
-        // TON Transactions
         async function buyWithTon(amount, action) {
             try {
                 const tx = { validUntil: Math.floor(Date.now()/1000)+60, messages: [{ address: devWallet, amount: (amount*1e9).toString() }] };
-                await tonConnectUI.sendTransaction(tx);
-                action(); telegram.showAlert('Acquisto completato!');
+                await tonConnectUI.sendTransaction(tx); action(); telegram.showAlert('Acquisto completato!');
             } catch(e) { telegram.showAlert('Errore: ' + e.message); }
         }
-
         document.getElementById('buy-auto-ton').onclick = () => buyWithTon(0.1, () => { autoClickers++; updateScore(); });
         document.getElementById('buy-multi-ton').onclick = () => buyWithTon(0.2, () => { multiplier *= 2; updateScore(); });
         document.getElementById('buy-super-ton').onclick = () => buyWithTon(0.5, () => { superClick = true; updateScore(); });
@@ -750,26 +564,8 @@
         document.getElementById('buy-health-ton').onclick = () => buyWithTon(0.6, () => { health++; updateHealth(); });
         document.getElementById('buy-magnet-ton').onclick = () => buyWithTon(0.5, () => { magnet = true; updateScore(); });
 
-        walletStatus.onclick = () => tonConnectUI.connectWallet();
-        tonConnectUI.onStatusChange(w => {
-            walletStatus.textContent = w ? 'Wallet: Connected' : 'Wallet: Disconnected';
-            walletStatus.style.color = w ? '#00FF00' : '#FF0000';
-        });
-
-        // --- AVVIO ---
-        document.getElementById('start-button').onclick = () => {
-            document.getElementById('title-screen').style.display = 'none';
-            document.getElementById('ui').style.display = 'flex';
-            gameStarted = true; lastTime = performance.now();
-        };
-
-        document.getElementById('restart-button').onclick = () => location.reload();
-
-        init();
-        requestAnimationFrame(gameLoop);
-
-        // Auto-score
         setInterval(() => { if(gameStarted && !gamePaused) { score += autoClickers * multiplier; updateScore(); } }, 1000);
+        init();
     </script>
 </body>
 </html>
