@@ -273,7 +273,7 @@
                 <line x1="30" y1="60" x2="70" y2="40" stroke="#FFFF00" stroke-width="2"/>
             </svg>
             <h1 style="text-shadow: 0 0 10px #00FFFF;">Viral Space Defender</h1>
-            <button id="start-button">START MISSION</button>
+            <button id="start-button" onclick="document.getElementById('title-screen').style.display='none'; document.getElementById('ui').style.display='flex'; document.getElementById('skills-ui').style.display='flex'; GameState.gameStarted=true; GameState.gamePaused=false; lastTime=performance.now(); try{bgMusic.play();}catch(e){} nextSpawnTime=Date.now()+500; requestAnimationFrame(gameLoop);">START MISSION</button>
         </div>
 
         <!-- UI GAMEPLAY -->
