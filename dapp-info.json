@@ -1,0 +1,28 @@
+{
+  "name": "Viral Space Defender",
+  "description": "Web3 Space Shooter Game on TON Blockchain",
+  "url": "https://viral-space-defender.vercel.app",
+  "logo": "https://viral-space-defender.vercel.app/icon-512.svg",
+  "category": "games",
+  "chains": ["ton"],
+  "version": "1.0.0",
+  "social": {
+    "telegram": "https://t.me/ViralSpaceDefender",
+    "twitter": null,
+    "discord": null
+  },
+  "features": [
+    "Play-to-Earn",
+    "TON Payments",
+    "Telegram Mini App",
+    "Boss Battles",
+    "Skill System"
+  ],
+  "verified": false,
+  "audited": false,
+  "contracts": [],
+  "developer": {
+    "name": "Marcone1983",
+    "address": "UQArbhbVEIkN4xSWis30yIrNGdmOTBbiMBduGeNTErPbviyR"
+  }
+}

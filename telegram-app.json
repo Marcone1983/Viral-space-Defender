@@ -1,0 +1,38 @@
+{
+  "name": "Viral Space Defender",
+  "short_name": "VSD",
+  "description": "An epic Web3 space shooter game on TON blockchain. Defend the galaxy, defeat bosses, and earn rewards!",
+  "url": "https://viral-space-defender.vercel.app",
+  "icon": "https://viral-space-defender.vercel.app/icon-512.svg",
+  "category": "games",
+  "subcategory": "arcade",
+  "platforms": ["android", "ios", "web"],
+  "features": [
+    "TON Connect wallet integration",
+    "In-game purchases with TON",
+    "Boss battles every 5 levels",
+    "Active skills system",
+    "Leaderboards",
+    "Telegram Mini App optimized"
+  ],
+  "languages": ["en", "it"],
+  "age_rating": "12+",
+  "developer": {
+    "name": "Marcone1983",
+    "contact": "https://t.me/Marcone1983"
+  },
+  "version": "1.0.0",
+  "release_date": "2026-02-02",
+  "screenshots": [
+    "https://viral-space-defender.vercel.app/screenshot1.png",
+    "https://viral-space-defender.vercel.app/screenshot2.png"
+  ],
+  "video_url": null,
+  "privacy_policy": "https://viral-space-defender.vercel.app/privacy.html",
+  "terms_of_service": "https://viral-space-defender.vercel.app/terms.html",
+  "blockchain": {
+    "network": "TON",
+    "wallet_integration": "TON Connect 2.0",
+    "payment_address": "UQArbhbVEIkN4xSWis30yIrNGdmOTBbiMBduGeNTErPbviyR"
+  }
+}

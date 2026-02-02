@@ -1,5 +1,7 @@
 {
-  "url": "https://marcone1983.github.io/Viral-space-Defender/",
+  "url": "https://viral-space-defender.vercel.app",
   "name": "Viral Space Defender",
-  "iconUrl": "https://marcone1983.github.io/Viral-space-Defender/logo.png"
+  "iconUrl": "https://viral-space-defender.vercel.app/icon-512.png",
+  "termsOfUseUrl": "https://viral-space-defender.vercel.app/terms.html",
+  "privacyPolicyUrl": "https://viral-space-defender.vercel.app/privacy.html"
 }
