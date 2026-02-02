@@ -305,8 +305,9 @@
 
         <!-- WALLET CONTAINER -->
         <div id="ton-connect-wrapper">
-            <span id="wallet-status">DISCONNECTED</span>
-            <div id="ton-connect"></div>
+            <button id="connect-wallet-btn" style="background: linear-gradient(135deg, #0098EA, #00D4FF); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 12px;">CONNECT WALLET</button>
+            <span id="wallet-status" style="display: none;">DISCONNECTED</span>
+            <div id="ton-connect" style="display: none;"></div>
         </div>
 
         <!-- SHOP ENTERPRISE -->
@@ -381,13 +382,30 @@
 
         tonConnectUI.onStatusChange(wallet => {
             const status = document.getElementById('wallet-status');
-            if (wallet) { status.textContent = 'CONNECTED'; status.style.color = '#32CD32'; }
-            else { status.textContent = 'DISCONNECTED'; status.style.color = '#00FFFF'; }
+            const connectBtn = document.getElementById('connect-wallet-btn');
+            if (wallet) { 
+                status.textContent = 'CONNECTED'; 
+                status.style.color = '#32CD32'; 
+                status.style.display = 'block';
+                connectBtn.textContent = 'WALLET ✓';
+                connectBtn.style.background = 'linear-gradient(135deg, #32CD32, #00FF00)';
+            } else { 
+                status.textContent = 'DISCONNECTED'; 
+                status.style.color = '#00FFFF'; 
+                status.style.display = 'none';
+                connectBtn.textContent = 'CONNECT WALLET';
+                connectBtn.style.background = 'linear-gradient(135deg, #0098EA, #00D4FF)';
+            }
         });
 
         // --- TELEGRAM INTEGRATION ---
-        const tg = window.Telegram.WebApp;
-        tg.ready(); tg.expand();
+        let tg = null;
+        try {
+            if (window.Telegram && window.Telegram.WebApp) {
+                tg = window.Telegram.WebApp;
+                tg.ready(); tg.expand();
+            }
+        } catch(e) { console.log('Not in Telegram environment'); }
 
         // --- CANVAS & CONTEXT ---
         const canvas = document.getElementById('canvas');
@@ -603,8 +621,11 @@
                     messages: [{ address: GameState.devWallet, amount: (amount * 1e9).toString() }]
                 };
                 await tonConnectUI.sendTransaction(tx);
-                action(); tg.showAlert('PURCHASE SUCCESSFUL!');
-            } catch (e) { tg.showAlert('TRANSACTION FAILED: ' + e.message); }
+                action(); 
+                if (tg && tg.showAlert) { tg.showAlert('PURCHASE SUCCESSFUL!'); } else { alert('PURCHASE SUCCESSFUL!'); }
+            } catch (e) { 
+                if (tg && tg.showAlert) { tg.showAlert('TRANSACTION FAILED: ' + e.message); } else { alert('TRANSACTION FAILED: ' + e.message); }
+            }
         }
 
         function updateUI() {
@@ -624,17 +645,31 @@
             }
         }
 
-        window.onload = () => {
+        // --- IMMEDIATE INITIALIZATION (NO WAIT FOR EXTERNAL SCRIPTS) ---
+        document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < 100; i++) stars.push({ x: Math.random()*800, y: Math.random()*600, size: Math.random()*2+1, speed: Math.random()*0.5+0.1 });
             
-            startButton.addEventListener('click', () => {
+            // START BUTTON - DIRECT ONCLICK
+            startButton.onclick = function() {
                 titleScreen.style.display = 'none';
                 document.getElementById('ui').style.display = 'flex';
                 document.getElementById('skills-ui').style.display = 'flex';
                 GameState.gameStarted = true; GameState.gamePaused = false;
-                lastTime = performance.now(); bgMusic.play();
-                nextSpawnTime = Date.now() + 500; requestAnimationFrame(gameLoop);
-            });
+                lastTime = performance.now(); 
+                try { bgMusic.play(); } catch(e) {}
+                nextSpawnTime = Date.now() + 500; 
+                requestAnimationFrame(gameLoop);
+            };
+            
+            // CONNECT WALLET BUTTON
+            document.getElementById('connect-wallet-btn').onclick = async function() {
+                try {
+                    await tonConnectUI.openModal();
+                } catch(e) {
+                    console.log('TON Connect error:', e);
+                    alert('Please install a TON wallet (Tonkeeper, OpenMask, etc.)');
+                }
+            };
 
             document.getElementById('shop-button').onclick = () => { GameState.gamePaused = true; shop.style.display = 'block'; };
             document.getElementById('close-shop').onclick = () => { GameState.gamePaused = false; shop.style.display = 'none'; };
@@ -695,7 +730,7 @@
 
             setInterval(() => { if(GameState.gameStarted && !GameState.gamePaused) { GameState.score += GameState.autoClickers * GameState.multiplier; updateUI(); } }, 1000);
             requestAnimationFrame(gameLoop);
-        };
+        });
     </script>
 </body>
 </html>
