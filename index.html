@@ -533,11 +533,17 @@
 
             for (let i = enemies.length - 1; i >= 0; i--) {
                 const e = enemies[i];
-                e.y += e.speed;
-                if (e.zigZag) { e.x += Math.sin(e.angle) * 3; e.angle += 0.1; }
                 
-                if (e.y > 650) { 
-                    if (!player.shieldActive) GameState.health--; 
+                // Boss projectiles move differently
+                if (e.type === 'bossProjectile') {
+                    e.x += e.vx; e.y += e.vy;
+                } else {
+                    e.y += e.speed;
+                    if (e.zigZag) { e.x += Math.sin(e.angle) * 3; e.angle += 0.1; }
+                }
+                
+                if (e.y > 650 || e.y < -50 || e.x < -50 || e.x > 850) { 
+                    if (e.type !== 'bossProjectile' && !player.shieldActive) GameState.health--; 
                     updateUI(); enemies.splice(i, 1); continue; 
                 }
                 
@@ -558,10 +564,35 @@
             if (GameState.bossActive && boss) {
                 boss.x += Math.sin(boss.angle) * boss.speed * boss.dir;
                 boss.angle += 0.02;
-                if (boss.x < 100 || boss.x > 700) boss.dir *= -1;
+                if (boss.x < 100 || boss.x > 700) { 
+                    boss.dir *= -1; 
+                    boss.speed = 2 + Math.random() * 2; // Random speed change
+                    boss.y += (Math.random() - 0.5) * 30; // Slight vertical movement
+                    boss.y = Math.max(50, Math.min(200, boss.y));
+                }
+                
+                // BOSS COLLISION WITH COOLDOWN (AUDIT FIX)
                 if (Math.hypot(player.x - boss.x, player.y - boss.y) < (player.size + boss.size)/2) {
-                    if (!player.shieldActive) GameState.health -= 0.05; 
-                    updateUI();
+                    const now = Date.now();
+                    if (!player.shieldActive && (!boss.lastHitTime || now - boss.lastHitTime > 1000)) {
+                        GameState.health -= 1;
+                        boss.lastHitTime = now;
+                        createParticles(player.x, player.y, 10, '#FF0000');
+                        updateUI();
+                    }
+                }
+                
+                // BOSS ATTACK: Shoots projectiles at player (AUDIT FIX)
+                if (!boss.nextAttack) boss.nextAttack = Date.now() + 2000;
+                if (Date.now() > boss.nextAttack) {
+                    const angle = Math.atan2(player.y - boss.y, player.x - boss.x);
+                    enemies.push({
+                        x: boss.x, y: boss.y + boss.size/2,
+                        size: 15, speed: 5,
+                        vx: Math.cos(angle) * 5, vy: Math.sin(angle) * 5,
+                        color: '#FF00FF', type: 'bossProjectile', health: 1, zigZag: false
+                    });
+                    boss.nextAttack = Date.now() + 1500 - GameState.level * 50;
                 }
             }
 
@@ -569,6 +600,38 @@
                 p.x += p.vx; p.y += p.vy; p.life -= 0.02;
                 if (p.life <= 0) particles.splice(i, 1);
             });
+            
+            // BULLET UPDATE (AUDIT FIX)
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i];
+                b.y -= b.speed;
+                if (b.y < 0) { bullets.splice(i, 1); continue; }
+                
+                // Collision with enemies
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    const e = enemies[j];
+                    if (Math.hypot(b.x - e.x, b.y - e.y) < (b.size + e.size)/2) {
+                        e.health -= GameState.superClick ? 2 : 1;
+                        createParticles(b.x, b.y, 5, '#00FFFF');
+                        bullets.splice(i, 1);
+                        break;
+                    }
+                }
+                
+                // Collision with boss
+                if (GameState.bossActive && boss && Math.hypot(b.x - boss.x, b.y - boss.y) < boss.size/2) {
+                    boss.health -= GameState.superClick ? 2 : 1;
+                    createParticles(b.x, b.y, 8, '#FF00FF');
+                    bullets.splice(i, 1);
+                    hitSound.play();
+                    if (boss.health <= 0) { 
+                        GameState.bossActive = false; 
+                        GameState.score += 1000 * GameState.multiplier; 
+                        createParticles(boss.x, boss.y, 50, '#FFD700');
+                        updateUI(); 
+                    }
+                }
+            }
             
             updateSkillUI();
         }
@@ -600,6 +663,17 @@
                     ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill();
                 });
                 ctx.globalAlpha = 1;
+                
+                // DRAW BULLETS (AUDIT FIX)
+                bullets.forEach(b => {
+                    ctx.fillStyle = b.color;
+                    ctx.shadowColor = b.color;
+                    ctx.shadowBlur = 10;
+                    ctx.beginPath();
+                    ctx.ellipse(b.x, b.y, b.size/2, b.size*2, 0, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                });
             }
         }
 
@@ -729,7 +803,46 @@
             });
 
             setInterval(() => { if(GameState.gameStarted && !GameState.gamePaused) { GameState.score += GameState.autoClickers * GameState.multiplier; updateUI(); } }, 1000);
-            requestAnimationFrame(gameLoop);
+            
+            // TOUCH CONTROLS FOR MOBILE (AUDIT FIX)
+            let touchStartX = 0, touchStartY = 0, playerStartX = 0, playerStartY = 0;
+            canvas.addEventListener('touchstart', e => {
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    const rect = canvas.getBoundingClientRect();
+                    touchStartX = touch.clientX - rect.left;
+                    touchStartY = touch.clientY - rect.top;
+                    playerStartX = player.x;
+                    playerStartY = player.y;
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            canvas.addEventListener('touchmove', e => {
+                if (e.touches.length > 0 && GameState.gameStarted && !GameState.gamePaused) {
+                    const touch = e.touches[0];
+                    const rect = canvas.getBoundingClientRect();
+                    const deltaX = (touch.clientX - rect.left) - touchStartX;
+                    const deltaY = (touch.clientY - rect.top) - touchStartY;
+                    player.x = Math.max(25, Math.min(775, playerStartX + deltaX));
+                    player.y = Math.max(25, Math.min(575, playerStartY + deltaY));
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            
+            // SHOOTING WITH SPACEBAR (AUDIT FIX)
+            document.addEventListener('keydown', e => {
+                if (e.code === 'Space' && GameState.gameStarted && !GameState.gamePaused) {
+                    bullets.push({ x: player.x, y: player.y - 30, size: 5, speed: 12, color: '#00FFFF' });
+                }
+            });
+            
+            // AUTO-FIRE ON TAP (MOBILE)
+            canvas.addEventListener('touchend', e => {
+                if (GameState.gameStarted && !GameState.gamePaused) {
+                    bullets.push({ x: player.x, y: player.y - 30, size: 5, speed: 12, color: '#00FFFF' });
+                }
+            });
         });
     </script>
 </body>
