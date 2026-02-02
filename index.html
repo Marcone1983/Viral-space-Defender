@@ -723,17 +723,25 @@
         document.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < 100; i++) stars.push({ x: Math.random()*800, y: Math.random()*600, size: Math.random()*2+1, speed: Math.random()*0.5+0.1 });
             
-            // START BUTTON - DIRECT ONCLICK (FIXED)
-            document.getElementById('start-button').onclick = function() {
-                document.getElementById('title-screen').style.display = 'none';
-                document.getElementById('ui').style.display = 'flex';
-                document.getElementById('skills-ui').style.display = 'flex';
-                GameState.gameStarted = true; GameState.gamePaused = false;
-                lastTime = performance.now(); 
-                try { bgMusic.play(); } catch(e) {}
-                nextSpawnTime = Date.now() + 500; 
-                requestAnimationFrame(gameLoop);
-            };
+            // START BUTTON - USING ADDEVENTLISTENER FOR RELIABILITY
+            const startBtn = document.getElementById('start-button');
+            if (startBtn) {
+                startBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('START BUTTON CLICKED!');
+                    document.getElementById('title-screen').style.display = 'none';
+                    document.getElementById('ui').style.display = 'flex';
+                    document.getElementById('skills-ui').style.display = 'flex';
+                    GameState.gameStarted = true; GameState.gamePaused = false;
+                    lastTime = performance.now(); 
+                    try { bgMusic.play(); } catch(e) {}
+                    nextSpawnTime = Date.now() + 500; 
+                    requestAnimationFrame(gameLoop);
+                });
+                console.log('Start button event listener attached successfully');
+            } else {
+                console.error('START BUTTON NOT FOUND!');
+            }
             
             // CONNECT WALLET BUTTON
             document.getElementById('connect-wallet-btn').onclick = async function() {
