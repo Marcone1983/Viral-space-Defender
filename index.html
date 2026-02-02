@@ -4,854 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Viral Space Defender - Enterprise Edition</title>
-    <!-- PWA & DApp Meta Tags -->
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/svg+xml" href="/icon-512.svg">
-    <meta name="theme-color" content="#00FFFF">
-    <meta name="description" content="Web3 Space Shooter Game on TON Blockchain. Play, earn, and defend the galaxy!">
-    <meta property="og:title" content="Viral Space Defender">
-    <meta property="og:description" content="Epic Web3 space shooter on TON blockchain with TON Connect payments">
-    <meta property="og:image" content="https://viral-space-defender.vercel.app/icon-512.svg">
-    <meta property="og:url" content="https://viral-space-defender.vercel.app">
-    <meta name="twitter:card" content="summary_large_image">
-    <!-- SCRIPTS ESTERNI - INTEGRATI SECONDO AUDIT SENIOR -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        /* CSS ORIGINALE PRESERVATO */
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to bottom, #0A0A2A, #1C1C4C);
-            font-family: 'Courier New', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            color: #FFD700;
-        }
-        #game-container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            background: #000;
-            border: 5px solid #00FFFF;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-            overflow: hidden;
-        }
-        #canvas {
-            display: block;
-            background: transparent;
-        }
-        #title-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-        #logo {
-            width: 300px;
-            height: 300px;
-        }
-        #start-button {
-            background: #FF00FF;
-            color: #fff;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            margin-top: 20px;
-            transition: transform 0.3s;
-            z-index: 110;
-            position: relative;
-        }
-        #start-button:hover {
-            transform: scale(1.1);
-        }
-        #ui {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 20px;
-            font-weight: bold;
-            text-shadow: 0 0 5px #00FFFF;
-            z-index: 50;
-        }
-        #score, #level, #health {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 8px 15px;
-            border-radius: 8px;
-        }
-        #shop-button {
-            background: #FF4500;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: transform 0.2s;
-        }
-        #shop-button:hover {
-            transform: scale(1.1);
-        }
-        #shop {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px #00FFFF;
-            display: none;
-            z-index: 200;
-            width: 500px;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-        #shop h2 {
-            text-align: center;
-            color: #00FFFF;
-            text-shadow: 0 0 10px #00FFFF;
-        }
-        .shop-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            border: 1px solid #00FFFF;
-        }
-        .shop-item span {
-            flex: 1;
-            font-size: 14px;
-        }
-        .shop-item button {
-            background: #32CD32;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-left: 5px;
-            font-weight: bold;
-        }
-        .shop-item button:hover {
-            background: #228B22;
-        }
-        .shop-item button:disabled {
-            background: #444;
-            cursor: not-allowed;
-        }
-        #close-shop {
-            display: block;
-            margin: 15px auto 0;
-            background: #FF0000;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 18px;
-        }
-        #game-over {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 0, 0, 0.7);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 300;
-            color: #fff;
-            font-size: 48px;
-            text-shadow: 0 0 10px #000;
-        }
-        #restart-button {
-            background: #FFD700;
-            color: #000;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 24px;
-            margin-top: 20px;
-        }
-
-        /* 10x IMPROVEMENT: ENTERPRISE WALLET UI */
-        #ton-connect-wrapper {
-            position: absolute;
-            top: 70px;
-            right: 10px;
-            z-index: 150;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 5px;
-            border-radius: 10px;
-            border: 1px solid #00FFFF;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        #wallet-status {
-            font-size: 12px;
-            color: #00FFFF;
-        }
-
-        /* 10x IMPROVEMENT: SKILLS UI */
-        #skills-ui {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 60;
-        }
-        .skill-slot {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #00FFFF;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-        .skill-slot:hover { transform: scale(1.1); background: rgba(0, 255, 255, 0.2); }
-        .skill-slot.cooldown { cursor: not-allowed; opacity: 0.5; }
+        body { margin: 0; padding: 0; background: #000; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; color: #FFD700; }
+        #game-container { position: relative; width: 800px; height: 600px; background: #000; border: 5px solid #00FFFF; border-radius: 15px; box-shadow: 0 0 30px rgba(0, 255, 255, 0.5); overflow: hidden; }
+        #canvas { display: block; background: transparent; }
+        #title-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
+        #start-button { background: #FF00FF; color: #fff; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-size: 24px; margin-top: 20px; z-index: 110; }
+        #ui { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 20px; font-weight: bold; z-index: 50; pointer-events: none; }
+        #ui > * { pointer-events: auto; background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 5px; }
+        #shop-button { background: #FF4500; color: white; border: none; cursor: pointer; }
+        #ton-connect-wrapper { position: absolute; top: 60px; right: 10px; z-index: 150; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+        #connect-wallet-btn { background: linear-gradient(135deg, #0098EA, #00D4FF); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        #skills-ui { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 60; }
+        .skill-slot { width: 60px; height: 60px; background: rgba(0,0,0,0.7); border: 2px solid #00FFFF; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; position: relative; }
         .skill-key { font-size: 10px; color: #FFD700; position: absolute; top: 2px; left: 4px; }
         .skill-icon { font-size: 24px; }
-        .cooldown-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.3);
-            height: 0%;
-            transition: height 0.1s linear;
-        }
+        #shop { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.95); padding: 20px; border-radius: 15px; border: 2px solid #00FFFF; display: none; z-index: 200; width: 400px; }
+        .shop-item { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+        #game-over { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,0,0,0.7); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 300; color: #fff; }
     </style>
 </head>
 <body>
     <div id="game-container">
         <canvas id="canvas" width="800" height="600"></canvas>
-        
-        <!-- TITLE SCREEN -->
         <div id="title-screen">
-            <svg id="logo" viewBox="0 0 100 100">
-                <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="#00FFFF" stroke-width="3"/>
-                <polygon points="50,20 80,35 80,65 50,80 20,65 20,35" fill="none" stroke="#FF00FF" stroke-width="3"/>
-                <text x="50" y="55" font-size="30" text-anchor="middle" fill="#FFD700" font-weight="bold">VSD</text>
-                <line x1="30" y1="40" x2="70" y2="60" stroke="#FFFF00" stroke-width="2"/>
-                <line x1="30" y1="60" x2="70" y2="40" stroke="#FFFF00" stroke-width="2"/>
-            </svg>
-            <h1 style="text-shadow: 0 0 10px #00FFFF;">Viral Space Defender</h1>
-            <button id="start-button" onclick="document.getElementById('title-screen').style.display='none'; document.getElementById('ui').style.display='flex'; document.getElementById('skills-ui').style.display='flex'; GameState.gameStarted=true; GameState.gamePaused=false; lastTime=performance.now(); try{bgMusic.play();}catch(e){} nextSpawnTime=Date.now()+500; requestAnimationFrame(gameLoop);">START MISSION</button>
+            <h1 style="font-size: 48px; text-shadow: 0 0 20px #00FFFF;">VIRAL SPACE DEFENDER</h1>
+            <button id="start-button">START MISSION</button>
         </div>
-
-        <!-- UI GAMEPLAY -->
         <div id="ui" style="display: none;">
             <div id="score">Score: 0</div>
             <div id="level">Level: 1</div>
             <div id="health">Health: 3</div>
             <button id="shop-button">UPGRADES</button>
         </div>
-
-        <!-- SKILLS UI -->
-        <div id="skills-ui" style="display: none;">
-            <div class="skill-slot" id="skill-1" onclick="useSkill(0)">
-                <span class="skill-key">1</span>
-                <span class="skill-icon">🛡️</span>
-                <div class="cooldown-overlay" id="cd-0"></div>
-            </div>
-            <div class="skill-slot" id="skill-2" onclick="useSkill(1)">
-                <span class="skill-key">2</span>
-                <span class="skill-icon">⚡</span>
-                <div class="cooldown-overlay" id="cd-1"></div>
-            </div>
-            <div class="skill-slot" id="skill-3" onclick="useSkill(2)">
-                <span class="skill-key">3</span>
-                <span class="skill-icon">🚀</span>
-                <div class="cooldown-overlay" id="cd-2"></div>
-            </div>
-        </div>
-
-        <!-- WALLET CONTAINER -->
         <div id="ton-connect-wrapper">
-            <button id="connect-wallet-btn" style="background: linear-gradient(135deg, #0098EA, #00D4FF); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 12px;">CONNECT WALLET</button>
-            <span id="wallet-status" style="display: none;">DISCONNECTED</span>
-            <div id="ton-connect" style="display: none;"></div>
+            <button id="connect-wallet-btn">CONNECT WALLET</button>
+            <div id="wallet-status" style="display:none;">DISCONNECTED</div>
         </div>
-
-        <!-- SHOP ENTERPRISE -->
+        <div id="skills-ui" style="display: none;">
+            <div class="skill-slot" onclick="useSkill(0)"><span class="skill-key">1</span><span class="skill-icon">🛡️</span></div>
+            <div class="skill-slot" onclick="useSkill(1)"><span class="skill-key">2</span><span class="skill-icon">⚡</span></div>
+            <div class="skill-slot" onclick="useSkill(2)"><span class="skill-key">3</span><span class="skill-icon">🚀</span></div>
+        </div>
         <div id="shop">
             <h2>UPGRADE STATION</h2>
-            <div class="shop-item">
-                <span>Auto-Blaster (+1/sec)<br>50 Score / 0.1 TON</span>
-                <button id="buy-auto">SCORE</button>
-                <button id="buy-auto-ton">TON</button>
-            </div>
-            <div class="shop-item">
-                <span>Score Multiplier x2<br>100 Score / 0.2 TON</span>
-                <button id="buy-multi">SCORE</button>
-                <button id="buy-multi-ton">TON</button>
-            </div>
-            <div class="shop-item">
-                <span>Super Laser (x2 damage)<br>200 Score / 0.5 TON</span>
-                <button id="buy-super">SCORE</button>
-                <button id="buy-super-ton">TON</button>
-            </div>
-            <div class="shop-item">
-                <span>Speed Boost (+20%)<br>150 Score / 0.3 TON</span>
-                <button id="buy-speed">SCORE</button>
-                <button id="buy-speed-ton">TON</button>
-            </div>
-            <div class="shop-item">
-                <span>Shield Upgrade (+1 health)<br>300 Score / 0.6 TON</span>
-                <button id="buy-health">SCORE</button>
-                <button id="buy-health-ton">TON</button>
-            </div>
-            <div class="shop-item">
-                <span>Magnet Field (attract)<br>250 Score / 0.5 TON</span>
-                <button id="buy-magnet">SCORE</button>
-                <button id="buy-magnet-ton">TON</button>
-            </div>
-            <button id="close-shop">EXIT STATION</button>
+            <div class="shop-item"><span>Auto-Blaster</span><button onclick="buy(50)">50 pts</button></div>
+            <button id="close-shop" style="width:100%; margin-top:10px;">EXIT</button>
         </div>
-
         <div id="game-over">
             <h1>MISSION FAILED</h1>
-            <p>Final Score: <span id="final-score"></span></p>
-            <button id="restart-button">RETRY MISSION</button>
+            <button onclick="location.reload()">RETRY</button>
         </div>
     </div>
 
-    <!-- AUDIO ORIGINALE PRESERVATO -->
-    <audio id="bg-music" loop><source src="data:audio/mpeg;base64,//MUXAAAAAEluZm8AAAAHAAAABAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAP4AAAAAACwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//MUZAAAAAGkAAABAAAAAQAAADwAAAAgAAAAABAAEAAAAAACAAAAAAAAAAAAAAAACAAAEAAAABAAAABgAAAAYAAAD+////AAAAAP//KExBTUUzLjk4qAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mpeg"></audio>
-    <audio id="hit-sound"><source src="data:audio/mpeg;base64,//MUXAAAAAEluZm8AAAAHAAAABAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAP4AAAAAACwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//MUZAAAAAGkAAABAAAAAQAAADwAAAAgAAAAABAAEAAAAAACAAAAAAAAAAAAAAAACAAAEAAAABAAAABgAAAAYAAAD+////AAAAAP//KExBTUUzLjk4qAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mpeg"></audio>
-    <audio id="level-up-sound"><source src="data:audio/mpeg;base64,//MUXAAAAAEluZm8AAAAHAAAABAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAP4AAAAAACwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//MUZAAAAAGkAAABAAAAAQAAADwAAAAgAAAAABAAEAAAAAACAAAAAAAAAAAAAAAACAAAEAAAABAAAABgAAAAYAAAD+////AAAAAP//KExBTUUzLjk4qAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mpeg"></audio>
-
     <script>
-        // --- 10x ENTERPRISE CORE: STATE MANAGEMENT ---
-        const GameState = {
-            score: 0, level: 1, health: 3,
-            playerSpeed: 15, autoClickers: 0, multiplier: 1,
-            superClick: false, magnet: false,
-            gameStarted: false, gamePaused: false,
-            bossActive: false,
-            devWallet: 'UQArbhbVEIkN4xSWis30yIrNGdmOTBbiMBduGeNTErPbviyR',
-            skills: [
-                { name: 'Shield', icon: '🛡️', cd: 10000, lastUsed: 0, active: false, duration: 3000 },
-                { name: 'EMP', icon: '⚡', cd: 15000, lastUsed: 0, active: false, duration: 500 },
-                { name: 'Missiles', icon: '🚀', cd: 8000, lastUsed: 0, active: false, duration: 2000 }
-            ]
-        };
-
-        // --- TON CONNECT INITIALIZATION ---
-        const tonConnectUI = new TONCONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://viral-space-defender.vercel.app/tonconnect-manifest.json',
-            buttonRootId: 'ton-connect'
-        });
-
-        tonConnectUI.onStatusChange(wallet => {
-            const status = document.getElementById('wallet-status');
-            const connectBtn = document.getElementById('connect-wallet-btn');
-            if (wallet) { 
-                status.textContent = 'CONNECTED'; 
-                status.style.color = '#32CD32'; 
-                status.style.display = 'block';
-                connectBtn.textContent = 'WALLET ✓';
-                connectBtn.style.background = 'linear-gradient(135deg, #32CD32, #00FF00)';
-            } else { 
-                status.textContent = 'DISCONNECTED'; 
-                status.style.color = '#00FFFF'; 
-                status.style.display = 'none';
-                connectBtn.textContent = 'CONNECT WALLET';
-                connectBtn.style.background = 'linear-gradient(135deg, #0098EA, #00D4FF)';
-            }
-        });
-
-        // --- TELEGRAM INTEGRATION ---
-        let tg = null;
-        try {
-            if (window.Telegram && window.Telegram.WebApp) {
-                tg = window.Telegram.WebApp;
-                tg.ready(); tg.expand();
-            }
-        } catch(e) { console.log('Not in Telegram environment'); }
-
-        // --- CANVAS & CONTEXT ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('score');
-        const levelEl = document.getElementById('level');
-        const healthEl = document.getElementById('health');
-        const shop = document.getElementById('shop');
-        const titleScreen = document.getElementById('title-screen');
-        const startButton = document.getElementById('start-button');
-        const gameOver = document.getElementById('game-over');
-        const finalScore = document.getElementById('final-score');
-        const bgMusic = document.getElementById('bg-music');
-        const hitSound = document.getElementById('hit-sound');
-        const levelUpSound = document.getElementById('level-up-sound');
+        const GameState = { score: 0, level: 1, health: 3, gameStarted: false, gamePaused: false, multiplier: 1, devWallet: 'UQArbhbVEIkN4xSWis30yIrNGdmOTBbiMBduGeNTErPbviyR' };
+        let player = { x: 400, y: 500, size: 40, shield: false };
+        let enemies = [], bullets = [], stars = [], particles = [], lastTime = 0, nextSpawn = 0;
 
-        // --- 10x IMPROVEMENT: ADVANCED ENTITY SYSTEM ---
-        let stars = [], enemies = [], particles = [], powerUps = [], bullets = [];
-        let player = { x: 400, y: 500, size: 50, color: '#00FFFF', armorColor: '#FFD700', helmetColor: '#FF00FF', shieldActive: false };
-        let boss = null, nextSpawnTime = 0, lastTime = 0;
+        // TON Connect
+        const tonConnectUI = new TONCONNECT_UI.TonConnectUI({ manifestUrl: 'https://viral-space-defender.vercel.app/tonconnect-manifest.json' });
+        tonConnectUI.onStatusChange(wallet => {
+            const btn = document.getElementById('connect-wallet-btn');
+            btn.textContent = wallet ? 'WALLET ✓' : 'CONNECT WALLET';
+            btn.style.background = wallet ? '#32CD32' : 'linear-gradient(135deg, #0098EA, #00D4FF)';
+        });
 
-        // --- 10x IMPROVEMENT: PARTICLE ENGINE ---
-        function createParticles(x, y, count = 10, color = '#FFD700') {
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x, y, 
-                    vx: (Math.random() - 0.5) * 10, 
-                    vy: (Math.random() - 0.5) * 10, 
-                    life: 1, color 
-                });
-            }
-        }
+        document.getElementById('connect-wallet-btn').onclick = () => tonConnectUI.connected ? tonConnectUI.disconnect() : tonConnectUI.openModal();
+        document.getElementById('start-button').onclick = () => {
+            document.getElementById('title-screen').style.display = 'none';
+            document.getElementById('ui').style.display = 'flex';
+            document.getElementById('skills-ui').style.display = 'flex';
+            GameState.gameStarted = true;
+            nextSpawn = Date.now() + 1000;
+            requestAnimationFrame(gameLoop);
+        };
 
-        // --- SKILL LOGIC ---
-        function useSkill(index) {
-            const skill = GameState.skills[index];
-            const now = Date.now();
-            if (now - skill.lastUsed < skill.cd) return;
-
-            skill.lastUsed = now;
-            if (index === 0) { // Shield
-                player.shieldActive = true;
-                setTimeout(() => player.shieldActive = false, skill.duration);
-            } else if (index === 1) { // EMP
-                enemies.forEach(e => { e.speed *= 0.2; createParticles(e.x, e.y, 5, '#00FFFF'); });
-                setTimeout(() => enemies.forEach(e => e.speed *= 5), skill.duration);
-            } else if (index === 2) { // Missiles
-                for(let i=0; i<10; i++) {
-                    setTimeout(() => {
-                        const target = enemies[Math.floor(Math.random()*enemies.length)];
-                        if(target) {
-                            createParticles(target.x, target.y, 20, '#FF4500');
-                            target.health = 0;
-                            GameState.score += 50;
-                            updateUI();
-                        }
-                    }, i * 100);
-                }
-            }
-            updateSkillUI();
-        }
-
-        function updateSkillUI() {
-            const now = Date.now();
-            GameState.skills.forEach((s, i) => {
-                const slot = document.getElementById(`skill-${i+1}`);
-                const overlay = document.getElementById(`cd-${i}`);
-                const elapsed = now - s.lastUsed;
-                if (elapsed < s.cd) {
-                    slot.classList.add('cooldown');
-                    overlay.style.height = `${100 - (elapsed / s.cd * 100)}%`;
-                } else {
-                    slot.classList.remove('cooldown');
-                    overlay.style.height = '0%';
-                }
-            });
-        }
-
-        // --- DRAWING FUNCTIONS ---
-        function drawPlayer() {
-            ctx.save();
-            ctx.translate(player.x, player.y);
-            
-            // Shield Effect
-            if (player.shieldActive) {
-                ctx.strokeStyle = '#00FFFF';
-                ctx.lineWidth = 3;
-                ctx.beginPath(); ctx.arc(0, 0, 45, 0, Math.PI*2); ctx.stroke();
-                ctx.fillStyle = 'rgba(0, 255, 255, 0.2)'; ctx.fill();
-            }
-
-            // Corpo
-            ctx.fillStyle = player.color;
-            ctx.beginPath(); ctx.ellipse(0, 0, 20, 30, 0, 0, Math.PI * 2); ctx.fill();
-            // Armatura
-            ctx.fillStyle = player.armorColor;
-            ctx.beginPath(); ctx.moveTo(-25, -10); ctx.lineTo(-35, 10); ctx.lineTo(-25, 20); ctx.fill();
-            ctx.beginPath(); ctx.moveTo(25, -10); ctx.lineTo(35, 10); ctx.lineTo(25, 20); ctx.fill();
-            // Casco
-            ctx.fillStyle = player.helmetColor;
-            ctx.beginPath(); ctx.arc(0, -25, 15, 0, Math.PI * 2); ctx.fill();
-            
-            ctx.restore();
-        }
-
-        function createEnemy() {
-            const types = ['drone', 'fighter', 'bomber', 'elite'];
-            const type = types[Math.floor(Math.random() * (GameState.level > 3 ? 4 : 3))];
-            let size = 30, speed = 2 + GameState.level * 0.3, color = '#FF0000', hp = 1;
-            
-            if (type === 'fighter') { size = 25; speed += 1; color = '#FF4500'; }
-            else if (type === 'bomber') { size = 40; speed -= 0.5; color = '#8B0000'; hp = 2; }
-            else if (type === 'elite') { size = 35; speed += 0.5; color = '#FFD700'; hp = 3; }
-            
-            enemies.push({ 
-                x: Math.random() * 750 + 25, y: -50, size, speed, color, type, 
-                health: hp, angle: 0, zigZag: type === 'elite' 
-            });
+        function spawnEnemy() {
+            enemies.push({ x: Math.random() * 750 + 25, y: -50, size: 30, speed: 2 + GameState.level * 0.5, hp: 1 });
         }
 
         function update(dt) {
             if (!GameState.gameStarted || GameState.gamePaused) return;
-
-            stars.forEach(s => { s.y += s.speed; if (s.y > 600) s.y = 0; });
-
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                const e = enemies[i];
-                
-                // Boss projectiles move differently
-                if (e.type === 'bossProjectile') {
-                    e.x += e.vx; e.y += e.vy;
-                } else {
-                    e.y += e.speed;
-                    if (e.zigZag) { e.x += Math.sin(e.angle) * 3; e.angle += 0.1; }
-                }
-                
-                if (e.y > 650 || e.y < -50 || e.x < -50 || e.x > 850) { 
-                    if (e.type !== 'bossProjectile' && !player.shieldActive) GameState.health--; 
-                    updateUI(); enemies.splice(i, 1); continue; 
-                }
-                
-                if (Math.hypot(player.x - e.x, player.y - e.y) < (player.size + e.size)/2) {
-                    if (!player.shieldActive) GameState.health--;
-                    updateUI();
-                    createParticles(e.x, e.y, 15, e.color);
-                    enemies.splice(i, 1);
-                }
-                if (e.health <= 0) {
-                    GameState.score += (10 + GameState.level*5) * GameState.multiplier;
-                    createParticles(e.x, e.y, 15, e.color);
-                    enemies.splice(i, 1);
-                    updateUI();
-                }
+            
+            // Spawn logic
+            if (Date.now() > nextSpawn) {
+                spawnEnemy();
+                nextSpawn = Date.now() + Math.max(500, 1500 - GameState.level * 100);
             }
 
-            if (GameState.bossActive && boss) {
-                boss.x += Math.sin(boss.angle) * boss.speed * boss.dir;
-                boss.angle += 0.02;
-                if (boss.x < 100 || boss.x > 700) { 
-                    boss.dir *= -1; 
-                    boss.speed = 2 + Math.random() * 2; // Random speed change
-                    boss.y += (Math.random() - 0.5) * 30; // Slight vertical movement
-                    boss.y = Math.max(50, Math.min(200, boss.y));
-                }
-                
-                // BOSS COLLISION WITH COOLDOWN (AUDIT FIX)
-                if (Math.hypot(player.x - boss.x, player.y - boss.y) < (player.size + boss.size)/2) {
-                    const now = Date.now();
-                    if (!player.shieldActive && (!boss.lastHitTime || now - boss.lastHitTime > 1000)) {
-                        GameState.health -= 1;
-                        boss.lastHitTime = now;
-                        createParticles(player.x, player.y, 10, '#FF0000');
-                        updateUI();
-                    }
-                }
-                
-                // BOSS ATTACK: Shoots projectiles at player (AUDIT FIX)
-                if (!boss.nextAttack) boss.nextAttack = Date.now() + 2000;
-                if (Date.now() > boss.nextAttack) {
-                    const angle = Math.atan2(player.y - boss.y, player.x - boss.x);
-                    enemies.push({
-                        x: boss.x, y: boss.y + boss.size/2,
-                        size: 15, speed: 5,
-                        vx: Math.cos(angle) * 5, vy: Math.sin(angle) * 5,
-                        color: '#FF00FF', type: 'bossProjectile', health: 1, zigZag: false
-                    });
-                    boss.nextAttack = Date.now() + 1500 - GameState.level * 50;
-                }
-            }
-
-            particles.forEach((p, i) => {
-                p.x += p.vx; p.y += p.vy; p.life -= 0.02;
-                if (p.life <= 0) particles.splice(i, 1);
+            enemies.forEach((e, i) => {
+                e.y += e.speed;
+                if (e.y > 650) { enemies.splice(i, 1); GameState.health--; }
+                if (Math.hypot(player.x - e.x, player.y - e.y) < 35) { enemies.splice(i, 1); GameState.health--; }
             });
-            
-            // BULLET UPDATE (AUDIT FIX)
-            for (let i = bullets.length - 1; i >= 0; i--) {
-                const b = bullets[i];
-                b.y -= b.speed;
-                if (b.y < 0) { bullets.splice(i, 1); continue; }
-                
-                // Collision with enemies
-                for (let j = enemies.length - 1; j >= 0; j--) {
-                    const e = enemies[j];
-                    if (Math.hypot(b.x - e.x, b.y - e.y) < (b.size + e.size)/2) {
-                        e.health -= GameState.superClick ? 2 : 1;
-                        createParticles(b.x, b.y, 5, '#00FFFF');
-                        bullets.splice(i, 1);
-                        break;
+
+            bullets.forEach((b, i) => {
+                b.y -= 10;
+                if (b.y < 0) bullets.splice(i, 1);
+                enemies.forEach((e, j) => {
+                    if (Math.hypot(b.x - e.x, b.y - e.y) < 25) {
+                        enemies.splice(j, 1); bullets.splice(i, 1);
+                        GameState.score += 10;
                     }
-                }
-                
-                // Collision with boss
-                if (GameState.bossActive && boss && Math.hypot(b.x - boss.x, b.y - boss.y) < boss.size/2) {
-                    boss.health -= GameState.superClick ? 2 : 1;
-                    createParticles(b.x, b.y, 8, '#FF00FF');
-                    bullets.splice(i, 1);
-                    hitSound.play();
-                    if (boss.health <= 0) { 
-                        GameState.bossActive = false; 
-                        GameState.score += 1000 * GameState.multiplier; 
-                        createParticles(boss.x, boss.y, 50, '#FFD700');
-                        updateUI(); 
-                    }
-                }
-            }
-            
-            updateSkillUI();
+                });
+            });
+
+            if (GameState.health <= 0) { GameState.gameStarted = false; document.getElementById('game-over').style.display = 'flex'; }
+            document.getElementById('score').textContent = `Score: ${GameState.score}`;
+            document.getElementById('health').textContent = `Health: ${GameState.health}`;
         }
 
         function draw() {
             ctx.fillStyle = '#000'; ctx.fillRect(0, 0, 800, 600);
-            stars.forEach(s => { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); });
             
+            // Stars
+            ctx.fillStyle = '#fff';
+            if (stars.length === 0) for(let i=0; i<50; i++) stars.push({x:Math.random()*800, y:Math.random()*600});
+            stars.forEach(s => { s.y += 1; if(s.y > 600) s.y = 0; ctx.fillRect(s.x, s.y, 2, 2); });
+
             if (GameState.gameStarted) {
-                drawPlayer();
-                enemies.forEach(e => {
-                    ctx.save(); ctx.translate(e.x, e.y); ctx.fillStyle = e.color;
-                    if (e.type === 'drone') { ctx.beginPath(); ctx.arc(0, 0, e.size/2, 0, Math.PI*2); ctx.fill(); }
-                    else if (e.type === 'fighter') { ctx.beginPath(); ctx.moveTo(0, -e.size/2); ctx.lineTo(-e.size/2, e.size/2); ctx.lineTo(e.size/2, e.size/2); ctx.fill(); }
-                    else if (e.type === 'elite') { 
-                        ctx.beginPath(); ctx.moveTo(0, -e.size/2); ctx.lineTo(e.size/2, 0); ctx.lineTo(0, e.size/2); ctx.lineTo(-e.size/2, 0); ctx.fill();
-                    } else { ctx.fillRect(-e.size/2, -e.size/4, e.size, e.size/2); }
-                    ctx.restore();
-                });
-                if (GameState.bossActive && boss) {
-                    ctx.save(); ctx.translate(boss.x, boss.y); ctx.fillStyle = boss.color;
-                    ctx.beginPath(); ctx.moveTo(0, -boss.size/2); ctx.lineTo(-boss.size/2, boss.size/2); ctx.lineTo(boss.size/2, boss.size/2); ctx.fill();
-                    ctx.fillStyle = '#FF0000'; ctx.fillRect(-boss.size/2, -boss.size/2-10, boss.size, 5);
-                    ctx.fillStyle = '#00FF00'; ctx.fillRect(-boss.size/2, -boss.size/2-10, boss.size * (boss.health/boss.maxHealth), 5);
-                    ctx.restore();
-                }
-                particles.forEach(p => {
-                    ctx.fillStyle = p.color; ctx.globalAlpha = p.life;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill();
-                });
-                ctx.globalAlpha = 1;
-                
-                // DRAW BULLETS (AUDIT FIX)
-                bullets.forEach(b => {
-                    ctx.fillStyle = b.color;
-                    ctx.shadowColor = b.color;
-                    ctx.shadowBlur = 10;
-                    ctx.beginPath();
-                    ctx.ellipse(b.x, b.y, b.size/2, b.size*2, 0, 0, Math.PI*2);
-                    ctx.fill();
-                    ctx.shadowBlur = 0;
-                });
+                // Player
+                ctx.fillStyle = '#00FFFF'; ctx.beginPath(); ctx.arc(player.x, player.y, 20, 0, Math.PI*2); ctx.fill();
+                // Enemies
+                enemies.forEach(e => { ctx.fillStyle = '#FF0000'; ctx.fillRect(e.x-15, e.y-15, 30, 30); });
+                // Bullets
+                bullets.forEach(b => { ctx.fillStyle = '#FFFF00'; ctx.fillRect(b.x-2, b.y-10, 4, 20); });
             }
         }
 
         function gameLoop(t) {
             const dt = (t - lastTime) / 1000; lastTime = t;
-            if (GameState.gameStarted && !GameState.gamePaused) {
-                if (Date.now() > nextSpawnTime && !GameState.bossActive) {
-                    createEnemy(); nextSpawnTime = Date.now() + Math.max(200, 800 - GameState.level * 30);
-                }
-                update(dt);
-            }
-            draw(); requestAnimationFrame(gameLoop);
+            update(dt); draw();
+            if (GameState.gameStarted) requestAnimationFrame(gameLoop);
         }
 
-        async function buyWithTon(amount, action) {
-            try {
-                const tx = {
-                    validUntil: Math.floor(Date.now() / 1000) + 60,
-                    messages: [{ address: GameState.devWallet, amount: (amount * 1e9).toString() }]
-                };
-                await tonConnectUI.sendTransaction(tx);
-                action(); 
-                if (tg && tg.showAlert) { tg.showAlert('PURCHASE SUCCESSFUL!'); } else { alert('PURCHASE SUCCESSFUL!'); }
-            } catch (e) { 
-                if (tg && tg.showAlert) { tg.showAlert('TRANSACTION FAILED: ' + e.message); } else { alert('TRANSACTION FAILED: ' + e.message); }
-            }
-        }
-
-        function updateUI() {
-            scoreEl.textContent = `Score: ${Math.floor(GameState.score)}`;
-            levelEl.textContent = `Level: ${GameState.level}`;
-            healthEl.textContent = `Health: ${Math.ceil(GameState.health)}`;
-            if (GameState.health <= 0) {
-                GameState.gameStarted = false;
-                gameOver.style.display = 'flex';
-                finalScore.textContent = Math.floor(GameState.score);
-                bgMusic.pause();
-            }
-            const newLvl = Math.floor(GameState.score / 500) + 1;
-            if (newLvl > GameState.level) {
-                GameState.level = newLvl; levelUpSound.play();
-                if (GameState.level % 5 === 0) createBoss();
-            }
-        }
-
-        // --- IMMEDIATE INITIALIZATION (NO WAIT FOR EXTERNAL SCRIPTS) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            for (let i = 0; i < 100; i++) stars.push({ x: Math.random()*800, y: Math.random()*600, size: Math.random()*2+1, speed: Math.random()*0.5+0.1 });
-            
-            // START BUTTON - USING ADDEVENTLISTENER FOR RELIABILITY
-            const startBtn = document.getElementById('start-button');
-            if (startBtn) {
-                startBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('START BUTTON CLICKED!');
-                    document.getElementById('title-screen').style.display = 'none';
-                    document.getElementById('ui').style.display = 'flex';
-                    document.getElementById('skills-ui').style.display = 'flex';
-                    GameState.gameStarted = true; GameState.gamePaused = false;
-                    lastTime = performance.now(); 
-                    try { bgMusic.play(); } catch(e) {}
-                    nextSpawnTime = Date.now() + 500; 
-                    requestAnimationFrame(gameLoop);
-                });
-                console.log('Start button event listener attached successfully');
-            } else {
-                console.error('START BUTTON NOT FOUND!');
-            }
-            
-            // CONNECT WALLET BUTTON
-            document.getElementById('connect-wallet-btn').onclick = async function() {
-                try {
-                    await tonConnectUI.openModal();
-                } catch(e) {
-                    console.log('TON Connect error:', e);
-                    alert('Please install a TON wallet (Tonkeeper, OpenMask, etc.)');
-                }
-            };
-
-            document.getElementById('shop-button').onclick = () => { GameState.gamePaused = true; shop.style.display = 'block'; };
-            document.getElementById('close-shop').onclick = () => { GameState.gamePaused = false; shop.style.display = 'none'; };
-            document.getElementById('restart-button').onclick = () => location.reload();
-
-            // Controls
-            const keys = {};
-            document.addEventListener('keydown', e => {
-                keys[e.key] = true;
-                if (e.key === '1') useSkill(0);
-                if (e.key === '2') useSkill(1);
-                if (e.key === '3') useSkill(2);
-            });
-            document.addEventListener('keyup', e => keys[e.key] = false);
-            
-            setInterval(() => {
-                if (!GameState.gameStarted || GameState.gamePaused) return;
-                if (keys['ArrowLeft'] || keys['a']) player.x -= GameState.playerSpeed;
-                if (keys['ArrowRight'] || keys['d']) player.x += GameState.playerSpeed;
-                if (keys['ArrowUp'] || keys['w']) player.y -= GameState.playerSpeed;
-                if (keys['ArrowDown'] || keys['s']) player.y += GameState.playerSpeed;
-                player.x = Math.max(25, Math.min(775, player.x));
-                player.y = Math.max(25, Math.min(575, player.y));
-            }, 16);
-
-            canvas.addEventListener('click', e => {
-                const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left, y = e.clientY - rect.top;
-                if (GameState.bossActive && boss && Math.hypot(x - boss.x, y - boss.y) < boss.size/2) {
-                    boss.health -= GameState.superClick ? 2 : 1;
-                    createParticles(boss.x, boss.y, 10); hitSound.play();
-                    if (boss.health <= 0) { GameState.bossActive = false; GameState.score += 1000 * GameState.multiplier; updateUI(); }
-                    return;
-                }
-                for (let i = enemies.length - 1; i >= 0; i--) {
-                    const en = enemies[i];
-                    if (Math.hypot(x - en.x, y - en.y) < en.size/2) {
-                        en.health -= GameState.superClick ? 2 : 1;
-                        break;
-                    }
-                }
-            });
-
-            // Shop logic (Score & TON)
-            const shopItems = [
-                { id: 'buy-auto', ton: 'buy-auto-ton', action: () => GameState.autoClickers++, cost: 50, tonCost: 0.1 },
-                { id: 'buy-multi', ton: 'buy-multi-ton', action: () => GameState.multiplier *= 2, cost: 100, tonCost: 0.2 },
-                { id: 'buy-super', ton: 'buy-super-ton', action: () => GameState.superClick = true, cost: 200, tonCost: 0.5 },
-                { id: 'buy-speed', ton: 'buy-speed-ton', action: () => GameState.playerSpeed += 3, cost: 150, tonCost: 0.3 },
-                { id: 'buy-health', ton: 'buy-health-ton', action: () => GameState.health++, cost: 300, tonCost: 0.6 },
-                { id: 'buy-magnet', ton: 'buy-magnet-ton', action: () => GameState.magnet = true, cost: 250, tonCost: 0.5 }
-            ];
-
-            shopItems.forEach(item => {
-                document.getElementById(item.id).onclick = () => { if(GameState.score >= item.cost) { GameState.score -= item.cost; item.action(); updateUI(); } };
-                document.getElementById(item.ton).onclick = () => buyWithTon(item.tonCost, () => { item.action(); updateUI(); });
-            });
-
-            setInterval(() => { if(GameState.gameStarted && !GameState.gamePaused) { GameState.score += GameState.autoClickers * GameState.multiplier; updateUI(); } }, 1000);
-            
-            // TOUCH CONTROLS FOR MOBILE (AUDIT FIX)
-            let touchStartX = 0, touchStartY = 0, playerStartX = 0, playerStartY = 0;
-            canvas.addEventListener('touchstart', e => {
-                if (e.touches.length > 0) {
-                    const touch = e.touches[0];
-                    const rect = canvas.getBoundingClientRect();
-                    touchStartX = touch.clientX - rect.left;
-                    touchStartY = touch.clientY - rect.top;
-                    playerStartX = player.x;
-                    playerStartY = player.y;
-                    e.preventDefault();
-                }
-            }, { passive: false });
-            
-            canvas.addEventListener('touchmove', e => {
-                if (e.touches.length > 0 && GameState.gameStarted && !GameState.gamePaused) {
-                    const touch = e.touches[0];
-                    const rect = canvas.getBoundingClientRect();
-                    const deltaX = (touch.clientX - rect.left) - touchStartX;
-                    const deltaY = (touch.clientY - rect.top) - touchStartY;
-                    player.x = Math.max(25, Math.min(775, playerStartX + deltaX));
-                    player.y = Math.max(25, Math.min(575, playerStartY + deltaY));
-                    e.preventDefault();
-                }
-            }, { passive: false });
-            
-            // SHOOTING WITH SPACEBAR (AUDIT FIX)
-            document.addEventListener('keydown', e => {
-                if (e.code === 'Space' && GameState.gameStarted && !GameState.gamePaused) {
-                    bullets.push({ x: player.x, y: player.y - 30, size: 5, speed: 12, color: '#00FFFF' });
-                }
-            });
-            
-            // AUTO-FIRE ON TAP (MOBILE)
-            canvas.addEventListener('touchend', e => {
-                if (GameState.gameStarted && !GameState.gamePaused) {
-                    bullets.push({ x: player.x, y: player.y - 30, size: 5, speed: 12, color: '#00FFFF' });
-                }
-            });
-        });
+        window.onkeydown = e => {
+            if (e.key === 'ArrowLeft') player.x -= 20;
+            if (e.key === 'ArrowRight') player.x += 20;
+            if (e.key === ' ') bullets.push({x: player.x, y: player.y});
+            player.x = Math.max(20, Math.min(780, player.x));
+        };
+        
+        function useSkill(n) { console.log('Skill', n); }
+        document.getElementById('shop-button').onclick = () => { GameState.gamePaused = true; document.getElementById('shop').style.display = 'block'; };
+        document.getElementById('close-shop').onclick = () => { GameState.gamePaused = false; document.getElementById('shop').style.display = 'none'; };
     </script>
 </body>
 </html>
