@@ -1,7 +1,1 @@
-{
-  "url": "https://viral-space-defender.vercel.app",
-  "name": "Viral Space Defender",
-  "iconUrl": "https://viral-space-defender.vercel.app/icon-512.png",
-  "termsOfUseUrl": "https://viral-space-defender.vercel.app/terms.html",
-  "privacyPolicyUrl": "https://viral-space-defender.vercel.app/privacy.html"
-}
+{"manifest_version": 2, "name": "Viral Space Defender", "version": "1.0.1", "description": "An updated extension for viral space defense with new functionalities!","permissions": ["activeTab", "storage"], "background": { "scripts": ["background.js"], "persistent": false }, "browser_action": { "default_popup": "popup.html", "default_icon": "icon.png" }, "content_scripts": [{ "matches": ["*://*/*"], "js": ["content.js"] }] }
